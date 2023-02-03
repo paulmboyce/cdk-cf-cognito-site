@@ -1,0 +1,24 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity E19UFLTVGEN2OZ"
+      },
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::com-bragaboo-friday-bucket/*"
+    },
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity E19UFLTVGEN2OZ"
+      },
+      "Action": ["s3:GetBucket*", "s3:GetObject*", "s3:List*"],
+      "Resource": [
+        "arn:aws:s3:::com-bragaboo-friday-bucket",
+        "arn:aws:s3:::com-bragaboo-friday-bucket/*"
+      ]
+    }
+  ]
+}
