@@ -1,30 +1,39 @@
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
-import { aws_s3 as s3, aws_s3_deployment as s3Deployment } from "aws-cdk-lib";
+
+//import {Bucket, BucketAccessControl} from "@aws-cdk/aws-s3";
 
 export class InfrastructureStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
-    const myBucket = new s3.Bucket(
-      this,
-      "com-bragaboo-web-cognito-app-bucket",
-      {
-        publicReadAccess: true,
-        removalPolicy: cdk.RemovalPolicy.DESTROY,
-        websiteIndexDocument: "index.html",
-      }
-    );
+    const bucket = new cdk.aws_s3.Bucket(this, "Bucket", {
+      accessControl: cdk.aws_s3.BucketAccessControl.PRIVATE,
+    });
 
-    const deployment = new s3Deployment.BucketDeployment(
+    //import {BucketDeployment, Source} from "@aws-cdk/aws-s3-deployment";
+
+    new cdk.aws_s3_deployment.BucketDeployment(this, "BucketDeployment", {
+      destinationBucket: bucket,
+      sources: [cdk.aws_s3_deployment.Source.asset("../website")],
+    });
+
+    //import {Distribution, OriginAccessIdentity} from "@aws-cdk/aws-cloudfront";
+    //import {S3Origin} from "@aws-cdk/aws-cloudfront-origins";
+
+    const originAccessIdentity = new cdk.aws_cloudfront.OriginAccessIdentity(
       this,
-      "deployStaticWebsite",
-      {
-        sources: [s3Deployment.Source.asset("../website")],
-        destinationBucket: myBucket,
-      }
+      "OriginAccessIdentity"
     );
+    bucket.grantRead(originAccessIdentity);
+
+    new cdk.aws_cloudfront.Distribution(this, "Distribution", {
+      defaultRootObject: "index.html",
+      defaultBehavior: {
+        origin: new cdk.aws_cloudfront_origins.S3Origin(bucket, {
+          originAccessIdentity,
+        }),
+      },
+    });
   }
 }
