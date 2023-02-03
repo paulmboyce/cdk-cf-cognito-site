@@ -1,39 +1,48 @@
-import * as cdk from "aws-cdk-lib";
+import { Stack, StackProps, CfnOutput } from "aws-cdk-lib";
 import { Construct } from "constructs";
+import {
+  aws_s3 as s3,
+  aws_s3_deployment as s3deployment,
+  aws_cloudfront as cloudfront,
+  aws_cloudfront_origins as cloudfront_origins,
+} from "aws-cdk-lib";
 
-//import {Bucket, BucketAccessControl} from "@aws-cdk/aws-s3";
-
-export class InfrastructureStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+export class InfrastructureStack extends Stack {
+  constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const bucket = new cdk.aws_s3.Bucket(this, "Bucket", {
-      accessControl: cdk.aws_s3.BucketAccessControl.PRIVATE,
+    const bucket = new s3.Bucket(this, "Bucket", {
+      bucketName: "com-bragaboo-friday-bucket",
+      accessControl: s3.BucketAccessControl.PRIVATE,
     });
 
-    //import {BucketDeployment, Source} from "@aws-cdk/aws-s3-deployment";
-
-    new cdk.aws_s3_deployment.BucketDeployment(this, "BucketDeployment", {
+    new s3deployment.BucketDeployment(this, "BucketDeployment", {
       destinationBucket: bucket,
-      sources: [cdk.aws_s3_deployment.Source.asset("../website")],
+      sources: [s3deployment.Source.asset("../website")],
     });
 
-    //import {Distribution, OriginAccessIdentity} from "@aws-cdk/aws-cloudfront";
-    //import {S3Origin} from "@aws-cdk/aws-cloudfront-origins";
-
-    const originAccessIdentity = new cdk.aws_cloudfront.OriginAccessIdentity(
+    const originAccessIdentity = new cloudfront.OriginAccessIdentity(
       this,
       "OriginAccessIdentity"
     );
     bucket.grantRead(originAccessIdentity);
 
-    new cdk.aws_cloudfront.Distribution(this, "Distribution", {
+    const distribution = new cloudfront.Distribution(this, "Distribution", {
       defaultRootObject: "index.html",
       defaultBehavior: {
-        origin: new cdk.aws_cloudfront_origins.S3Origin(bucket, {
+        origin: new cloudfront_origins.S3Origin(bucket, {
           originAccessIdentity,
         }),
       },
     });
+
+    new CfnOutput(this, "DistributionId", {
+      value: distribution.distributionId,
+    });
+
+    new CfnOutput(this, "Site:distributionDomainName", {
+      value: distribution.distributionDomainName,
+    });
+    new CfnOutput(this, "Site:domainName", { value: distribution.domainName });
   }
 }
