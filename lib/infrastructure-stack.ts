@@ -13,19 +13,13 @@ export class InfrastructureStack extends Stack {
 
     const bucket = new s3.Bucket(this, "Bucket", {
       bucketName: "com-bragaboo-friday-bucket",
-      accessControl: s3.BucketAccessControl.PRIVATE,
-    });
-
-    new s3deployment.BucketDeployment(this, "BucketDeployment", {
-      destinationBucket: bucket,
-      sources: [s3deployment.Source.asset("../website")],
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
     });
 
     const originAccessIdentity = new cloudfront.OriginAccessIdentity(
       this,
       "OriginAccessIdentity"
     );
-    bucket.grantRead(originAccessIdentity);
 
     const distribution = new cloudfront.Distribution(this, "Distribution", {
       defaultRootObject: "index.html",
@@ -36,13 +30,22 @@ export class InfrastructureStack extends Stack {
       },
     });
 
+    new s3deployment.BucketDeployment(
+      this,
+      "BucketDeploymentWithInvalidation",
+      {
+        destinationBucket: bucket,
+        sources: [s3deployment.Source.asset("../website")],
+        distribution,
+        distributionPaths: ["/*"],
+      }
+    );
+    bucket.grantRead(originAccessIdentity);
+
     new CfnOutput(this, "DistributionId", {
       value: distribution.distributionId,
     });
 
-    new CfnOutput(this, "Site:distributionDomainName", {
-      value: distribution.distributionDomainName,
-    });
-    new CfnOutput(this, "Site:domainName", { value: distribution.domainName });
+    new CfnOutput(this, "domainName", { value: distribution.domainName });
   }
 }
