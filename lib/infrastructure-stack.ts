@@ -1,18 +1,18 @@
-import * as cdk from "aws-cdk-lib";
+// import { Stack, StackProps} from "aws-cdk-lib";
 import { Construct } from "constructs";
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
-import { aws_s3 as s3, aws_s3_deployment as s3deploy } from "aws-cdk-lib";
+import * as s3 from "aws-cdk-lib/aws-s3";
+import * as s3deploy from "aws-cdk-lib/aws-s3-deployment";
 import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
-import { CfnOutput, Duration, RemovalPolicy, Stack } from "aws-cdk-lib";
+import { CfnOutput, RemovalPolicy, Stack, StackProps } from "aws-cdk-lib";
 import * as iam from "aws-cdk-lib/aws-iam";
 import * as cloudfront_origins from "aws-cdk-lib/aws-cloudfront-origins";
 import * as acm from "aws-cdk-lib/aws-certificatemanager";
 
-export class InfrastructureStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+export class InfrastructureStack extends Stack {
+  constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const siteDomain = "bragaboo-web-cognito-bucket";
+    const siteDomain = "test-web-cognito-bucket";
 
     // Content bucket
     const siteBucket = new s3.Bucket(this, "SiteBucketStack", {
@@ -58,9 +58,6 @@ export class InfrastructureStack extends cdk.Stack {
       value: distribution.distributionId,
     });
 
-    new CfnOutput(this, "Site:distributionDomainName", {
-      value: distribution.distributionDomainName,
-    });
     new CfnOutput(this, "Site:domainName", { value: distribution.domainName });
 
     // Deploy site contents to S3 bucket
