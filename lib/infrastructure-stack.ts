@@ -12,7 +12,7 @@ export class InfrastructureStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const siteDomain = "test-web-cognito-bucket";
+    const siteDomain = "com.bragaboo.cognito.test";
 
     // Content bucket
     const siteBucket = new s3.Bucket(this, "SiteBucketStack", {
