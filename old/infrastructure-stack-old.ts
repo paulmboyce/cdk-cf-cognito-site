@@ -14,6 +14,14 @@ export class InfrastructureStack extends cdk.Stack {
 
     const siteDomain = "bragaboo-web-cognito-bucket";
 
+    // The code that defines your stack goes here
+    /*
+    const siteBucket = new s3.Bucket(this, siteDomain, {
+      publicReadAccess: true,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      websiteIndexDocument: "index.html",
+    });
+*/
     // Content bucket
     const siteBucket = new s3.Bucket(this, "SiteBucketStack", {
       bucketName: siteDomain,
@@ -43,7 +51,7 @@ export class InfrastructureStack extends cdk.Stack {
 
     // CloudFront distribution
     const distribution = new cloudfront.Distribution(this, "SiteDistribution", {
-      defaultRootObject: "index.html",
+      //defaultRootObject: "index.html",
       defaultBehavior: {
         origin: new cloudfront_origins.S3Origin(siteBucket, {
           originAccessIdentity: cloudfrontOAI,
@@ -65,7 +73,7 @@ export class InfrastructureStack extends cdk.Stack {
 
     // Deploy site contents to S3 bucket
     new s3deploy.BucketDeployment(this, "DeployWithInvalidation", {
-      sources: [s3deploy.Source.asset("./website")],
+      sources: [s3deploy.Source.asset("../website")],
       destinationBucket: siteBucket,
       distribution,
       distributionPaths: ["/*"],
