@@ -2,7 +2,7 @@
 import "source-map-support/register";
 import * as cdk from "aws-cdk-lib";
 import { InfrastructureStack } from "../lib/infrastructure-stack";
-import { CognitoUserPoolStack } from "../lib/cognito-userpool-stack";
+import { CognitoUserPoolApiGatewayStack } from "../lib/cognito-userpool-stack";
 import { CognitoUserPoolUIStack } from "../lib/cognito-userpool-ui-stack";
 
 const app = new cdk.App();
@@ -22,7 +22,7 @@ new InfrastructureStack(app, "TestCognitoWebStack", {
   /* For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html */
 });
 
-new CognitoUserPoolStack(app, "TestCognitoUserPoolStack", {
+new CognitoUserPoolApiGatewayStack(app, "TestCognitoUserPoolApiGatewayStack", {
   env: { region: "eu-west-1" },
 });
 new CognitoUserPoolUIStack(app, "TestCognitoUserPoolUIStack", {
