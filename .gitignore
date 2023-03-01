@@ -9,3 +9,5 @@ cdk.out
 
 *.yaml
 
+#allowed
+!server/app.js

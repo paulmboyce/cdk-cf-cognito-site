@@ -8,13 +8,15 @@
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
-    "cdk": "cdk"
+    "cdk": "cdk",
+    "start": "node server/app.js"
   },
   "devDependencies": {
     "@types/jest": "^29.4.0",
     "@types/node": "18.11.18",
     "aws-cdk": "2.63.0",
     "esbuild": "^0.17.10",
+    "http": "^0.0.1-security",
     "jest": "^29.4.1",
     "ts-jest": "^29.0.5",
     "ts-node": "^10.9.1",
