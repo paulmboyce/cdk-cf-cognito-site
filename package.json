@@ -10,7 +10,7 @@
     "test": "jest",
     "cdk": "cdk",
     "start": "node server/app.js",
-    "if you want to watch HTML changes": "manually execute via 'npx nodemon -e html'"
+    "if you want to watch HTML changes": "manually execute via 'npx nodemon -e html,js'"
   },
   "devDependencies": {
     "@types/jest": "^29.4.0",
