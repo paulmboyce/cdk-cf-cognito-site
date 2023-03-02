@@ -28,501 +28,315 @@
 <!-- snippet-start:[Polly.HTML.BrowserExample.complete] -->
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>AWS SDK for JavaScript - Browser Getting Started Application</title>
 
-    <link href="https://www.w3schools.com/w3css/4/w3.css" rel="stylesheet" />
-    <script src="https://demowebapp.s3-us-west-2.amazonaws.com/amazon-cognito-identity.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
-    <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/aws-sdk/2.850.0/aws-sdk.min.js"></script> -->
-    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1325.0.min.js"></script>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <title>AWS SDK for JavaScript - Browser Getting Started Application</title>
 
-  <body>
-    <div class="w3-bar w3-black">
-      <button class="w3-bar-item w3-button" onclick="openTab('signin')">
-        Sign-in
-      </button>
-      <button class="w3-bar-item w3-button" onclick="openTab('signup')">
-        Sign-up
-      </button>
-      <button class="w3-bar-item w3-button" onclick="openTab('managemfa')">
-        Manage MFA
-      </button>
-      <button class="w3-bar-item w3-button" onclick="openTab('callapis')">
-        Call APIs
-      </button>
-      <button class="w3-bar-item w3-button" onclick="openTab('accesss3')">
-        Access S3
-      </button>
+  <link href="https://www.w3schools.com/w3css/4/w3.css" rel="stylesheet" />
+  <script src="https://demowebapp.s3-us-west-2.amazonaws.com/amazon-cognito-identity.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aws-sdk/2.850.0/aws-sdk.min.js"></script>
+  <!--  <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1325.0.min.js"></script> -->
+
+<body>
+  <div class="w3-bar w3-black">
+    <button class="w3-bar-item w3-button" onclick="openTab('signin')">
+      Sign-in
+    </button>
+    <button class="w3-bar-item w3-button" onclick="openTab('signup')">
+      Sign-up
+    </button>
+    <button class="w3-bar-item w3-button" onclick="openTab('managemfa')">
+      Manage MFA
+    </button>
+    <button class="w3-bar-item w3-button" onclick="openTab('callapis')">
+      Call APIs
+    </button>
+    <button class="w3-bar-item w3-button" onclick="openTab('accesss3')">
+      Access S3
+    </button>
+  </div>
+  <div id="signup" class="w3-container w3-padding-large w3-black tab" style="display: none">
+    <div class="w3-section">
+      <label>Name</label>
+      <input class="w3-input w3-border" type="text" id="signup_name" required />
     </div>
-    <div
-      id="signup"
-      class="w3-container w3-padding-large w3-black tab"
-      style="display: none"
-    >
-      <div class="w3-section">
-        <label>Name</label>
-        <input
-          class="w3-input w3-border"
-          type="text"
-          id="signup_name"
-          required
-        />
-      </div>
-      <div class="w3-section">
-        <label>Username</label>
-        <input
-          class="w3-input w3-border"
-          type="text"
-          id="signup_username"
-          required
-        />
-      </div>
-      <div class="w3-section">
-        <label>Email</label>
-        <input
-          class="w3-input w3-border"
-          type="text"
-          id="signup_email"
-          required
-        />
-      </div>
-      <div class="w3-section">
-        <label>Phone</label>
-        <input
-          class="w3-input w3-border"
-          type="text"
-          id="signup_phone"
-          required
-        />
-      </div>
-      <div class="w3-section">
-        <label>Password</label>
-        <input
-          class="w3-input w3-border"
-          type="password"
-          id="signup_password"
-          required
-        />
-      </div>
-      <button
-        type="submit"
-        class="w3-button w3-red w3-margin-bottom"
-        onclick="signUp()"
-      >
-        Sign Up
-      </button>
+    <div class="w3-section">
+      <label>Username</label>
+      <input class="w3-input w3-border" type="text" id="signup_username" required />
     </div>
-
-    <div id="signin" class="w3-container w3-padding-large w3-black tab">
-      <div class="w3-section">
-        <label>Username</label>
-        <input
-          class="w3-input w3-border"
-          type="text"
-          id="signin_username"
-          required
-        />
-      </div>
-      <div class="w3-section">
-        <label>Password</label>
-        <input
-          class="w3-input w3-border"
-          type="password"
-          id="signin_password"
-          required
-        />
-      </div>
-      <button
-        type="submit"
-        class="w3-button w3-red w3-margin-bottom"
-        onclick="signIn()"
-      >
-        Sign In
-      </button>
-      <button
-        type="submit"
-        class="w3-button w3-grey w3-margin-bottom"
-        onclick="signOut()"
-      >
-        Sign Out
-      </button>
-      <div class="w3-section" id="tokens">
-        <pre class="" id="idToken"></pre>
-        <pre class="" id="accessToken"></pre>
-      </div>
+    <div class="w3-section">
+      <label>Email</label>
+      <input class="w3-input w3-border" type="text" id="signup_email" required />
     </div>
-
-    <div
-      id="managemfa"
-      class="w3-container w3-padding-large w3-grey tab"
-      style="display: none"
-    >
-      <button
-        type="submit"
-        class="w3-button w3-black w3-margin-bottom"
-        onclick="enableMFA()"
-      >
-        Enable MFA
-      </button>
-      <button
-        type="submit"
-        class="w3-button w3-black w3-margin-bottom"
-        onclick="disableMFA()"
-      >
-        Disable MFA
-      </button>
-      <div id="qrcode"></div>
+    <div class="w3-section">
+      <label>Phone</label>
+      <input class="w3-input w3-border" type="text" id="signup_phone" required />
     </div>
-
-    <div
-      id="callapis"
-      class="w3-container w3-padding-large w3-grey tab"
-      style="display: none"
-    >
-      <button
-        type="submit"
-        class="w3-button w3-black w3-margin-bottom"
-        onclick="callAPIGW()"
-      >
-        Call APIGW
-      </button>
-      <div class="w3-section">
-        <pre class="" id="apiresponse"></pre>
-      </div>
+    <div class="w3-section">
+      <label>Password</label>
+      <input class="w3-input w3-border" type="password" id="signup_password" required />
     </div>
+    <button type="submit" class="w3-button w3-red w3-margin-bottom" onclick="signUp()">
+      Sign Up
+    </button>
+  </div>
 
-    <div
-      id="accesss3"
-      class="w3-container w3-padding-large w3-grey tab"
-      style="display: none"
-    >
-      <label>Bucket</label>
-      <input
-        class="w3-input w3-border"
-        type="text"
-        id="bucket_name"
-        value="s3-test-cognito-access"
-      />
-      <label>Prefix</label>
-      <input
-        class="w3-input w3-border"
-        type="text"
-        id="prefix"
-        placeholder="Enter to filter results..."
-        value=""
-      /><br />
-      <button
-        type="submit"
-        class="w3-button w3-black w3-margin-bottom"
-        onclick="listFiles()"
-      >
-        List files
-      </button>
-      <pre class="" id="s3files"></pre>
+  <div id="signin" class="w3-container w3-padding-large w3-black tab">
+    <div class="w3-section">
+      <label>Username</label>
+      <input class="w3-input w3-border" type="text" id="signin_username" required />
     </div>
-
-    <div id="textToSynth">
-      <input
-        autofocus
-        size="23"
-        type="text"
-        id="textEntry"
-        value="It's very good to meet you."
-      />
-      <button class="btn default" onClick="speakText()">Synthesize</button>
-      <p id="result">Enter text above then click Synthesize</p>
+    <div class="w3-section">
+      <label>Password</label>
+      <input class="w3-input w3-border" type="password" id="signin_password" required />
     </div>
-    <audio id="audioPlayback" controls>
-      <source id="audioSource" type="audio/mp3" src="" />
-    </audio>
-    <!-- script src="https://sdk.amazonaws.com/js/aws-sdk-2.410.0.min.js"></script>  -->
-    <!-- snippet-start:[Polly.HTML.BrowserExample.config] -->
+    <button type="submit" class="w3-button w3-red w3-margin-bottom" onclick="signIn()">
+      Sign In
+    </button>
+    <button type="submit" class="w3-button w3-grey w3-margin-bottom" onclick="signOut()">
+      Sign Out
+    </button>
+    <div class="w3-section" id="tokens">
+      <pre class="" id="idToken"></pre>
+      <pre class="" id="accessToken"></pre>
+    </div>
+  </div>
 
-    <script type="text/javascript">
-      /************
-       * This fiddle uses amazon cognito identity SDK
-       * https://github.com/aws-amplify/amplify-js/tree/master/packages/amazon-cognito-identity-js
-       *************/
+  <div id="managemfa" class="w3-container w3-padding-large w3-grey tab" style="display: none">
+    <button type="submit" class="w3-button w3-green w3-margin-bottom" onclick="enableMFA()">
+      Enable MFA
+    </button>
+    <button type="submit" class="w3-button w3-black w3-margin-bottom" onclick="disableMFA()">
+      Disable MFA
+    </button>
+    <button type="submit" class="w3-button w3-blue w3-margin-bottom" onclick="enterMFACode()">
+      Enter Code from Authenticator
+    </button>
+    <div id="qrcode"></div>
+  </div>
 
-      /************ Configure user pool and client*/
-      var poolData = {
-        UserPoolId: "eu-west-1_ayYl6Et6f", // Your user pool id here
-        ClientId: "3vbuqdb4pbvid3l4ve9o4dvn1a",
+  <div id="callapis" class="w3-container w3-padding-large w3-grey tab" style="display: none">
+    <button type="submit" class="w3-button w3-black w3-margin-bottom" onclick="callAPIGW()">
+      Call APIGW
+    </button>
+    <div class="w3-section">
+      <pre class="" id="apiresponse"></pre>
+    </div>
+  </div>
+
+  <div id="accesss3" class="w3-container w3-padding-large w3-grey tab" style="display: none">
+    <label>Bucket</label>
+    <input class="w3-input w3-border" type="text" id="bucket_name" value="s3-test-cognito-access" />
+    <label>Prefix</label>
+    <input class="w3-input w3-border" type="text" id="prefix" placeholder="Enter to filter results..." value="" /><br />
+    <button type="submit" class="w3-button w3-black w3-margin-bottom" onclick="listFiles()">
+      List files
+    </button>
+    <pre class="" id="s3files"></pre>
+  </div>
+
+  <div id="textToSynth">
+    <input autofocus size="23" type="text" id="textEntry" value="It's very good to meet you." />
+    <button class="btn default" onClick="speakText()">Synthesize</button>
+    <p id="result">Enter text above then click Synthesize</p>
+  </div>
+  <audio id="audioPlayback" controls>
+    <source id="audioSource" type="audio/mp3" src="" />
+  </audio>
+  <!-- script src="https://sdk.amazonaws.com/js/aws-sdk-2.410.0.min.js"></script>  -->
+  <!-- snippet-start:[Polly.HTML.BrowserExample.config] -->
+
+  <script type="text/javascript">
+    /************
+     * This fiddle uses amazon cognito identity SDK
+     * https://github.com/aws-amplify/amplify-js/tree/master/packages/amazon-cognito-identity-js
+     *************/
+
+    /************ Configure user pool and client*/
+    var poolData = {
+      UserPoolId: "eu-west-1_ayYl6Et6f", // Your user pool id here
+      ClientId: "3vbuqdb4pbvid3l4ve9o4dvn1a",
+    };
+
+    var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+    var cognitoUser;
+
+    /************ sign up*/
+    function signUp() {
+      var email = $("#signup_email").val();
+      var username = $("#signup_username").val();
+      var password = $("#signup_password").val();
+      var name = $("#signup_name").val();
+      var phone = $("#signup_phone").val();
+
+      var attributeList = [];
+      var inputList = [
+        { Name: "email", Value: email },
+        { Name: "phone_number", Value: phone },
+        { Name: "name", Value: name },
+      ];
+
+      for (let input of inputList) {
+        let attribute = new AmazonCognitoIdentity.CognitoUserAttribute(input);
+        attributeList.push(attribute);
+
+        console.log("input:", input);
+        console.log("attribute:", attribute);
+      }
+
+      userPool.signUp(username, password, attributeList, null, function (
+        err,
+        result
+      ) {
+        if (err) {
+          console.log(err.message || JSON.stringify(err));
+          return;
+        } else {
+          console.log("Success:" + result);
+
+          var cognitoUser = result.user;
+          var confirmationCode = prompt("Please enter confirmation code:");
+
+          cognitoUser.confirmRegistration(confirmationCode, true, function (
+            err,
+            result
+          ) {
+            if (err) {
+              alert(err.message || JSON.stringify(err));
+              return;
+            }
+            console.log("call result: " + result);
+          });
+        }
+      });
+    }
+
+    /************ sign in*/
+    function signIn() {
+      var username = $("#signin_username").val();
+      var password = $("#signin_password").val();
+
+
+
+      // =================
+      // USING CognitoIdentityServiceProvider.initiateAuth():
+
+      // var params = {
+      //   AuthFlow: "USER_PASSWORD_AUTH" /* required */,
+      //   ClientId: "3vbuqdb4pbvid3l4ve9o4dvn1a" /* required */,
+      //   // AnalyticsMetadata: {
+      //   //   AnalyticsEndpointId: "STRING_VALUE",
+      //   // },
+      //   // USERNAME: username,
+      //   // PASSWORD: password,
+      //   AuthParameters: {
+      //     USERNAME: username,
+      //     PASSWORD: password,
+      //   },
+      //   // ClientMetadata: {
+      //   //   "<StringType>": "STRING_VALUE",
+      //   //   /* '<StringType>': ... */
+      //   // },
+      //   // UserContextData: {
+      //   //   EncodedData: "STRING_VALUE",
+      //   //   IpAddress: "STRING_VALUE",
+      //   // },
+      // };
+      // let cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
+      // cognitoidentityserviceprovider.initiateAuth(params, function (
+      //   err,
+      //   data
+      // ) {
+      //   if (err) console.log("initiateAuth - OOPS!", err, err.stack);
+      //   // an error occurred
+      //   // successful response
+      //   else
+      //     console.log(
+      //       "CognitoIdentityServiceProvider.initiateAuth(): ACCESS TOKEN",
+      //       data.AuthenticationResult.AccessToken
+      //     );
+      //   console.log(
+      //     "CognitoIdentityServiceProvider.initiateAuth(): GOT TOKENS! ID TOKEN",
+      //     data.AuthenticationResult.IdToken
+      //   );
+      //   console.log(
+      //     "CognitoIdentityServiceProvider.initiateAuth(): GOT TOKENS! TOKEN TYPE",
+      //     data.AuthenticationResult.TokenType
+      //   );
+      // });
+      // =================
+
+      var authenticationData = {
+        Username: username,
+        Password: password,
       };
 
-      var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-      var cognitoUser;
+      console.log("Login as: ", JSON.stringify(authenticationData));
 
-      /************ sign up*/
-      function signUp() {
-        var email = $("#signup_email").val();
-        var username = $("#signup_username").val();
-        var password = $("#signup_password").val();
-        var name = $("#signup_name").val();
-        var phone = $("#signup_phone").val();
+      var userData = {
+        Username: username,
+        Pool: userPool,
+      };
 
-        var attributeList = [];
-        var inputList = [
-          { Name: "email", Value: email },
-          { Name: "phone_number", Value: phone },
-          { Name: "name", Value: name },
-        ];
+      var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(
+        authenticationData
+      );
 
-        for (let input of inputList) {
-          let attribute = new AmazonCognitoIdentity.CognitoUserAttribute(input);
-          attributeList.push(attribute);
+      console.log(
+        "--------Authenticate --- " +
+        username +
+        ", UserPool:" +
+        JSON.stringify(userPool)
+      );
 
-          console.log("input:", input);
-          console.log("attribute:", attribute);
-        }
+      cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
 
-        userPool.signUp(username, password, attributeList, null, function (
-          err,
-          result
-        ) {
-          if (err) {
-            console.log(err.message || JSON.stringify(err));
-            return;
-          } else {
-            console.log("Success:" + result);
+      //cognitoUser.setAuthenticationFlowType('CUSTOM_AUTH');
 
-            var cognitoUser = result.user;
-            var confirmationCode = prompt("Please enter confirmation code:");
+      cognitoUser.authenticateUser(authenticationDetails, {
+        onSuccess: function (result) {
+          var idToken = result.getIdToken().getJwtToken();
+          var accessToken = result.getAccessToken().getJwtToken();
 
-            cognitoUser.confirmRegistration(confirmationCode, true, function (
-              err,
-              result
-            ) {
-              if (err) {
-                alert(err.message || JSON.stringify(err));
-                return;
-              }
-              console.log("call result: " + result);
-            });
-          }
-        });
-      }
+          $("#idToken").html(
+            "<b>ID Token</b><br>" + JSON.stringify(parseJwt(idToken), null, 2)
+          );
+          $("#accessToken").html(
+            "<b>Access Token</b><br>" +
+            JSON.stringify(parseJwt(accessToken), null, 2)
+          );
+          console.log("AccessToken:" + accessToken);
 
-      /************ sign in*/
-      function signIn() {
-        var username = $("#signin_username").val();
-        var password = $("#signin_password").val();
 
-        // =================
-        // USING CognitoIdentityServiceProvider.initiateAuth():
 
-        // var params = {
-        //   AuthFlow: "USER_PASSWORD_AUTH" /* required */,
-        //   ClientId: "3vbuqdb4pbvid3l4ve9o4dvn1a" /* required */,
-        //   // AnalyticsMetadata: {
-        //   //   AnalyticsEndpointId: "STRING_VALUE",
-        //   // },
-        //   // USERNAME: username,
-        //   // PASSWORD: password,
-        //   AuthParameters: {
-        //     USERNAME: username,
-        //     PASSWORD: password,
-        //   },
-        //   // ClientMetadata: {
-        //   //   "<StringType>": "STRING_VALUE",
-        //   //   /* '<StringType>': ... */
-        //   // },
-        //   // UserContextData: {
-        //   //   EncodedData: "STRING_VALUE",
-        //   //   IpAddress: "STRING_VALUE",
-        //   // },
-        // };
-        // let cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
-        // cognitoidentityserviceprovider.initiateAuth(params, function (
-        //   err,
-        //   data
-        // ) {
-        //   if (err) console.log("initiateAuth - OOPS!", err, err.stack);
-        //   // an error occurred
-        //   // successful response
-        //   else
-        //     console.log(
-        //       "CognitoIdentityServiceProvider.initiateAuth(): ACCESS TOKEN",
-        //       data.AuthenticationResult.AccessToken
-        //     );
-        //   console.log(
-        //     "CognitoIdentityServiceProvider.initiateAuth(): GOT TOKENS! ID TOKEN",
-        //     data.AuthenticationResult.IdToken
-        //   );
-        //   console.log(
-        //     "CognitoIdentityServiceProvider.initiateAuth(): GOT TOKENS! TOKEN TYPE",
-        //     data.AuthenticationResult.TokenType
-        //   );
-        // });
-        // =================
 
-        var authenticationData = {
-          Username: username,
-          Password: password,
-        };
+        },
 
-        console.log("Login as: ", JSON.stringify(authenticationData));
+        onFailure: function (err) {
+          alert(err.message || JSON.stringify(err));
+        },
 
-        var userData = {
-          Username: username,
-          Pool: userPool,
-        };
+        totpRequired: function (codeDeliveryDetails) {
+          console.log("mfaRequired");
+          console.log(codeDeliveryDetails);
+          var verificationCode = prompt('Please input second factor code', '');
+          cognitoUser.sendMFACode(verificationCode, this, 'SOFTWARE_TOKEN_MFA');
+        },
 
-        var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(
-          authenticationData
-        );
+      });
 
-        console.log(
-          "--------Authenticate --- " +
-            username +
-            ", UserPool:" +
-            JSON.stringify(userPool)
-        );
 
-        cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
 
-        //cognitoUser.setAuthenticationFlowType('CUSTOM_AUTH');
 
-        cognitoUser.authenticateUser(authenticationDetails, {
-          onSuccess: function (result) {
-            var idToken = result.getIdToken().getJwtToken();
-            var accessToken = result.getAccessToken().getJwtToken();
+    }
 
-            $("#idToken").html(
-              "<b>ID Token</b><br>" + JSON.stringify(parseJwt(idToken), null, 2)
-            );
-            $("#accessToken").html(
-              "<b>Access Token</b><br>" +
-                JSON.stringify(parseJwt(accessToken), null, 2)
-            );
-            console.log("AccessToken:" + accessToken);
-          },
 
-          onFailure: function (err) {
-            alert(err.message || JSON.stringify(err));
-          },
-        });
-      }
-
-      /****************signOut**************/
-      function signOut() {
-        cognitoUser.signOut();
-        $("#idToken").html("");
-        $("#accessToken").html("");
-        $("#apiresponse").html("");
-      }
-
-      /************ call protected APIGW endpoint
-       *MAKE SURE APIGW COGNITO AUTHORIZER CONFIGURATION IS COMPLE
-       *MAKE SURE API ACCEPTS ID-TOKEN (NO OAUTH SCOPE DEFINED IN AUTHORIZATION)
-       *YOU CAN ONLY USE ID-TOKEN SINCE CUSTOM SCOPES ARE NOT SUPPORTED WHEN SDK IS USED
-       ******************************************/
-      function callAPIGW() {
-        apiGatewayUrl =
-          "https://y1c6gc0i8k.execute-api.eu-west-1.amazonaws.com/Prod/pets";
-
-        if (!cognitoUser) {
-          alert("Please login");
-          return;
-        }
-
-        // set ID Token in "Authorization" header
-        const headers = {
-          "Content-Type": "application/json",
-          // Authorization: cognitoUser.signInUserSession.idToken.jwtToken,
-          Authorization: `Bearer ${cognitoUser.signInUserSession.accessToken.jwtToken}`,
-        };
-
-        axios
-          .get(apiGatewayUrl, { headers: headers })
-          .then((response) => {
-            console.log(response.data);
-            $("#apiresponse").html(
-              "<b>Response</b><br>" + JSON.stringify(response.data, null, 2)
-            );
-          })
-          .catch(function (error) {
-            console.error(error);
-          });
-      }
-
-      /************ list files in S3 bucket
-       *PREREQUISITES
-       *1. IDENTITY POOL CREATED AND CONFIGURED TO USE USER POOL AS IDP
-       *2. PERMISSIONS DEFINED ON THE IAM ROLE TO ALLOW S3 LIST
-       *3. BUCKET CREATED WITH PROPER X-ORIGIN POLICY TO ALLOW CALLS
-       */
-      function listFiles() {
-        $("#s3files").html("");
-
-        if (!cognitoUser) {
-          alert("Please login");
-          return;
-        }
-
-        AWS.config.region = "eu-west-1";
-        AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-          IdentityPoolId: "eu-west-1:41007c8c-8822-4c9d-a2bc-a62d2daf23d8",
-          Logins: {
-            "cognito-idp.eu-west-1.amazonaws.com/eu-west-1_ayYl6Et6f":
-              cognitoUser.signInUserSession.idToken.jwtToken,
-          },
-        });
-
-        // Make the call to obtain credentials
-        AWS.config.credentials.get(function () {
-          // Credentials will be available when this function is called.
-          var accessKeyId = AWS.config.credentials.accessKeyId;
-          var secretAccessKey = AWS.config.credentials.secretAccessKey;
-          var sessionToken = AWS.config.credentials.sessionToken;
-
-          var s3 = new AWS.S3();
-          var params = {
-            Bucket: $("#bucket_name").val(),
-            Prefix: $("#prefix").val(),
-          };
-          s3.listObjects(params, function (err, data) {
-            if (err) console.log(err, err.stack);
-            // an error occurred
-            else {
-              $("#s3files").html(
-                "<b>Response</b><br>" +
-                  JSON.stringify(data.Contents, ["Key"], 2)
-              ); // successful response
-            }
-          });
-        });
-      }
-
-      /******************helpers*/
-      function openTab(tabName) {
-        var i;
-        var x = document.getElementsByClassName("tab");
-        for (i = 0; i < x.length; i++) {
-          x[i].style.display = "none";
-        }
-        document.getElementById(tabName).style.display = "block";
-      }
-
-      function parseJwt(token) {
-        var base64Url = token.split(".")[1];
-        var base64 = base64Url.replace("-", "+").replace("_", "/");
-        return JSON.parse(window.atob(base64));
-      }
-    </script>
-
-    <script type="text/javascript">
-      // // Initialize the Amazon Cognito credentials provider
-      // AWS.config.region = "eu-west-1"; // Region
-      // AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-      //   IdentityPoolId: "eu-west-1:41007c8c-8822-4c9d-a2bc-a62d2daf23d8",
-      // });
-
+    function configCognitoIdentityForServices() {
+      // Set the Cognio Identity for Service calls(S3 , Polly, etc)
       AWS.config.region = "eu-west-1";
       AWS.config.credentials = new AWS.CognitoIdentityCredentials({
         IdentityPoolId: "eu-west-1:41007c8c-8822-4c9d-a2bc-a62d2daf23d8",
@@ -531,40 +345,249 @@
             cognitoUser.signInUserSession.idToken.jwtToken,
         },
       });
+    }
 
-      // Function invoked by button click
-      function speakText() {
-        // Create the JSON parameters for getSynthesizeSpeechUrl
-        var speechParams = {
-          OutputFormat: "mp3",
-          SampleRate: "16000",
-          Text: "",
-          TextType: "text",
-          VoiceId: "Matthew",
+    /****************signOut**************/
+    function signOut() {
+      cognitoUser.signOut();
+      $("#idToken").html("");
+      $("#accessToken").html("");
+      $("#apiresponse").html("");
+      AWS.config.credentials = null;
+    }
+
+    /******************************** enable MFA
+     * MAKE SUTE TOTP MFA IS ENABLED IN USER POOL
+     ********************************************/
+    function enableMFA() {
+      console.log("--------Start TOTP MFA Setup");
+      cognitoUser.associateSoftwareToken({
+        onSuccess: function (result) {
+          console.log(result);
+        },
+        associateSecretCode: function (secretCode) {
+          console.log("MFASecretCode:" + secretCode);
+
+          var canvas = document.getElementById("qrcanvas");
+          var tokenObj = cognitoUser.signInUserSession.idToken.payload;
+          var totpUri =
+            "otpauth://totp/MFA:" +
+            tokenObj["email"] +
+            "?secret=" +
+            secretCode +
+            "&issuer=CognitoJSPOC";
+          console.log(totpUri);
+
+          var qrcode = new QRCode(document.getElementById("qrcode"), {
+            text: totpUri,
+            width: 128,
+            height: 128,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H,
+          });
+
+          console.log(qrcode);
+        },
+
+        onFailure: function (err) {
+          console.log(err);
+        },
+      });
+    }
+
+    function enterMFACode() {
+      var totpCode = prompt("Enter software token code");
+      cognitoUser.verifySoftwareToken(totpCode, "SoftwareToken", {
+        onSuccess: function (result) {
+          console.log(result);
+
+          totpMfaSettings = {
+            PreferredMfa: true,
+            Enabled: true,
+          };
+          cognitoUser.setUserMfaPreference(null, totpMfaSettings, function (
+            err,
+            result
+          ) {
+            if (err) {
+              alert(err);
+            }
+            console.log("setUserMfaPreference call result " + result);
+          });
+        },
+
+        onFailure: function (err) {
+          console.log(err);
+        },
+      });
+    }
+
+    /************ disable MFA*/
+    function disableMFA() {
+      var mfaSettings = {
+        PreferredMfa: false,
+        Enabled: false,
+      };
+
+      cognitoUser.setUserMfaPreference(mfaSettings, mfaSettings, function (
+        err,
+        result
+      ) {
+        if (err) {
+          console.error(err);
+        }
+        console.log("clear MFA call result " + result);
+      });
+    }
+
+    /************ call protected APIGW endpoint
+     *MAKE SURE APIGW COGNITO AUTHORIZER CONFIGURATION IS COMPLE
+     *MAKE SURE API ACCEPTS ID-TOKEN (NO OAUTH SCOPE DEFINED IN AUTHORIZATION)
+     *YOU CAN ONLY USE ID-TOKEN SINCE CUSTOM SCOPES ARE NOT SUPPORTED WHEN SDK IS USED
+     ******************************************/
+    function callAPIGW() {
+      apiGatewayUrl =
+        "https://y1c6gc0i8k.execute-api.eu-west-1.amazonaws.com/Prod/pets";
+
+      if (!cognitoUser) {
+        alert("Please login");
+        return;
+      }
+
+      // set ID Token in "Authorization" header
+      const headers = {
+        "Content-Type": "application/json",
+        // Ignores oAUTH scopes on API Gateway:
+        Authorization: cognitoUser.signInUserSession.idToken.jwtToken,
+
+        // Bearer seems to be options with Cognito Tokens (because they are Aws and not "oAuth2.0")
+        // Authorization: `Bearer ${cognitoUser.signInUserSession.accessToken.jwtToken}`,
+
+        // Access Token has one scope: the default cognito scope aws.cognito.signin.user.admin
+        // If you pass this token, it will Fail API Gateway Authorizthor that has scopes set
+        // (unless you add this scope, but more simple to use idToken,
+        // which has no scopes because there is no advantage in adding the aws.cognito.signin.user.admin)
+        // Authorization: `${cognitoUser.signInUserSession.accessToken.jwtToken}`,
+      };
+
+      axios
+        .get(apiGatewayUrl, { headers: headers })
+        .then((response) => {
+          console.log(response.data);
+          $("#apiresponse").html(
+            "<b>Response</b><br>" + JSON.stringify(response.data, null, 2)
+          );
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+    }
+
+    /************ list files in S3 bucket
+     *PREREQUISITES
+     *1. IDENTITY POOL CREATED AND CONFIGURED TO USE USER POOL AS IDP
+     *2. PERMISSIONS DEFINED ON THE IAM ROLE TO ALLOW S3 LIST
+     *3. BUCKET CREATED WITH PROPER X-ORIGIN POLICY TO ALLOW CALLS
+     */
+    function listFiles() {
+
+      configCognitoIdentityForServices();
+
+      $("#s3files").html("");
+
+      if (!cognitoUser) {
+        alert("Please login");
+        return;
+      }
+
+
+
+      // Make the call to obtain credentials
+      AWS.config.credentials.get(function () {
+        // Credentials will be available when this function is called.
+        var accessKeyId = AWS.config.credentials.accessKeyId;
+        var secretAccessKey = AWS.config.credentials.secretAccessKey;
+        var sessionToken = AWS.config.credentials.sessionToken;
+
+        var s3 = new AWS.S3();
+        var params = {
+          Bucket: $("#bucket_name").val(),
+          Prefix: $("#prefix").val(),
         };
-        speechParams.Text = document.getElementById("textEntry").value;
-        <!-- snippet-end:[Polly.HTML.BrowserExample.config] -->
-
-        // <!-- snippet-start:[Polly.HTML.BrowserExample.synthesize] -->
-        // Create the Polly service object and presigner object
-        var polly = new AWS.Polly({ apiVersion: "2016-06-10" });
-        var signer = new AWS.Polly.Presigner(speechParams, polly);
-
-        // Create presigned URL of synthesized speech file
-        signer.getSynthesizeSpeechUrl(speechParams, function (error, url) {
-          if (error) {
-            document.getElementById("result").innerHTML = error;
-            alert("Please log in.");
-          } else {
-            document.getElementById("audioSource").src = url;
-            document.getElementById("audioPlayback").load();
-            document.getElementById("result").innerHTML =
-              "Speech ready to play.";
+        s3.listObjects(params, function (err, data) {
+          if (err) console.log(err, err.stack);
+          // an error occurred
+          else {
+            $("#s3files").html(
+              "<b>Response</b><br>" +
+              JSON.stringify(data.Contents, ["Key"], 2)
+            ); // successful response
           }
         });
+      });
+    }
+
+    /******************helpers*/
+    function openTab(tabName) {
+      var i;
+      var x = document.getElementsByClassName("tab");
+      for (i = 0; i < x.length; i++) {
+        x[i].style.display = "none";
       }
-    </script>
-    <!-- snippet-end:[Polly.HTML.BrowserExample.synthesize] -->
-  </body>
+      document.getElementById(tabName).style.display = "block";
+    }
+
+    function parseJwt(token) {
+      var base64Url = token.split(".")[1];
+      var base64 = base64Url.replace("-", "+").replace("_", "/");
+      return JSON.parse(window.atob(base64));
+    }
+
+
+    // Function invoked by button click
+    function speakText() {
+
+      document.getElementById("result").innerHTML = "";
+      configCognitoIdentityForServices();
+
+      // if (!cognitoUser) {
+      //   alert("Please login");
+      //   return;
+      // }
+
+      // Create the JSON parameters for getSynthesizeSpeechUrl
+      var speechParams = {
+        OutputFormat: "mp3",
+        SampleRate: "16000",
+        Text: "",
+        TextType: "text",
+        VoiceId: "Matthew",
+      };
+      speechParams.Text = document.getElementById("textEntry").value;
+      // snippet-end:[Polly.HTML.BrowserExample.config] -->
+
+      // <!-- snippet-start:[Polly.HTML.BrowserExample.synthesize] -->
+      // Create the Polly service object and presigner object
+      var polly = new AWS.Polly({ apiVersion: "2016-06-10" });
+      var signer = new AWS.Polly.Presigner(speechParams, polly);
+
+      // Create presigned URL of synthesized speech file
+      signer.getSynthesizeSpeechUrl(speechParams, function (error, url) {
+        if (error) {
+          document.getElementById("result").innerHTML = error;
+          alert("Please log in.");
+        } else {
+          document.getElementById("audioSource").src = url;
+          document.getElementById("audioPlayback").load();
+          document.getElementById("result").innerHTML =
+            "Speech ready to play.";
+        }
+      });
+    }
+  </script>
+  <!-- snippet-end:[Polly.HTML.BrowserExample.synthesize] -->
+</body>
+
 </html>
 <!-- snippet-end:[Polly.HTML.BrowserExample.complete] -->
